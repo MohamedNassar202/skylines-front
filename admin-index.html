@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="shortcut icon" href="images/navbar_logo.jpeg" />
+
+    <!-- Bootstrap -->
+    <link href="CSS/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="CSS/all.min.css" />
+    <!-- my CSS -->
+    <link rel="stylesheet" href="CSS/admin-index.css" />
+  </head>
+
+  <body>
+    <!-- ! Loading Screen -->
+    <div id="pageLoader" class="page-loader">
+      <img
+        src="images/navbar_logo.jpeg"
+        class="loader-logo"
+        alt="loader-logo"
+      />
+    </div>
+
+    <!--! OVERLAY -->
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+    <!--! Mobile Toggle Button -->
+    <button
+      class="btn text-white d-lg-none mobile-menu-btn"
+      onclick="toggleSidebar()"
+    >
+      <i class="fa fa-bars"></i>
+    </button>
+
+    <!--! SIDEBAR -->
+    <div class="sidebar">
+      <h4 class="text-warning mb-4">Admin Panel</h4>
+
+      <div class="nav flex-column">
+        <a class="nav-link active" onclick="showSection('products', this)"
+          >Products</a
+        >
+        <a class="nav-link" onclick="showSection('categories', this)"
+          >Categories</a
+        >
+        <a class="nav-link text-danger mt-3" onclick="logout()">Logout</a>
+      </div>
+    </div>
+
+    <!--! MAIN -->
+    <div class="main">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="stat-card products">
+            <div class="icon">
+              <i class="fa-brands fa-product-hunt"></i>
+            </div>
+
+            <div class="info">
+              <h6 class="fs-5">Total Products</h6>
+              <h3 id="totalProducts">0</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="stat-card categories">
+            <div class="icon">
+              <i class="fa-solid fa-layer-group"></i>
+            </div>
+
+            <div class="info">
+              <h6 class="fs-5">Total Categories</h6>
+              <h3 id="totalCategories">0</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- PRODUCTS -->
+      <div id="productsSection">
+        <h3 class="mb-3 text-white text-center fw-bold mt-2">Products</h3>
+
+        <!-- SEARCH -->
+        <div class="d-flex gap-2 mb-3">
+          <input
+            id="searchInput"
+            class="form-control"
+            placeholder="Search..."
+            oninput="searchProducts()"
+          />
+        </div>
+
+        <button class="btn btn-warning mb-3" onclick="openAddProduct()">
+          Add Product
+        </button>
+
+        <div class="row" id="productsData"></div>
+
+        <div class="d-flex justify-content-center mt-4" id="pagination"></div>
+      </div>
+
+      <!-- ! CATEGORIES -->
+      <div id="categoriesSection" style="display: none">
+        <h3 class="mb-3 text-white fw-bold text-center mt-2">Categories</h3>
+
+        <button class="btn btn-warning mb-3" onclick="openAddCategory()">
+          Add Category
+        </button>
+
+        <div class="row g-3" id="categoriesData"></div>
+      </div>
+    </div>
+
+    <!--! EDIT MODAL -->
+    <div class="modal fade" id="editModal" tabindex="-1">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-dark text-white border border-warning">
+          <!-- HEADER -->
+          <div class="modal-header border-secondary">
+            <h5 class="modal-title fw-bold text-warning">Edit Product</h5>
+            <button
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+
+          <!-- BODY -->
+          <div class="modal-body">
+            <div class="row g-3">
+              <!-- TITLE -->
+              <div class="col-md-6">
+                <label class="form-label text-secondary">Title</label>
+                <input
+                  id="title"
+                  class="form-control"
+                  placeholder="Product title"
+                  onfocus="
+                    hideAllErrors();
+                    showError('title', 'editTitleError');
+                  "
+                  oninput="
+                    validateField({
+                      inputId: 'title',
+                      errorId: 'editTitleError',
+                      validator: (value) => value.trim().length >= 4,
+                    });
+                    checkEditForm();
+                  "
+                />
+                <i
+                  id="editTitleValid"
+                  class="fa-solid fa-circle-check valid-icon"
+                ></i>
+
+                <small id="editTitleError" class="error-text">
+                  Title must be at least 4 characters
+                </small>
+              </div>
+
+              <!-- PRICE -->
+              <div class="col-md-6">
+                <label class="form-label text-secondary">Price</label>
+                <input
+                  id="price"
+                  type="number"
+                  class="form-control"
+                  step="1"
+                  onwheel="this.blur()"
+                  onfocus="
+                    hideAllErrors();
+                    showError('price', 'editPriceError');
+                  "
+                  oninput="
+                    validateField({
+                      inputId: 'price',
+                      errorId: 'editPriceError',
+                      validator: (value) => Number(value) > 0,
+                    });
+                    validateField({
+                      inputId: 'priceAfterDiscount',
+                      errorId: 'editDiscountError',
+                      validator: validateEditDiscount,
+                    });
+                    checkEditForm();
+                  "
+                />
+                <i
+                  id="editPriceValid"
+                  class="fa-solid fa-circle-check valid-icon"
+                ></i>
+                <small id="editPriceError" class="error-text">
+                  Price must be greater than 0
+                </small>
+              </div>
+
+              <!-- DISCOUNT -->
+              <div class="col-md-6">
+                <label class="form-label text-secondary"
+                  >Price After Discount</label
+                >
+                <input
+                  id="priceAfterDiscount"
+                  type="number"
+                  class="form-control"
+                  step="1"
+                  onwheel="this.blur()"
+                  onfocus="
+                    hideAllErrors();
+                    showError('priceAfterDiscount', 'editDiscountError');
+                  "
+                  oninput="
+                    validateField({
+                      inputId: 'priceAfterDiscount',
+                      errorId: 'editDiscountError',
+                      validator: validateEditDiscount,
+                    });
+                    checkEditForm();
+                  "
+                />
+                <small id="editDiscountError" class="error-text">
+                  Discount must be less than Price
+                </small>
+              </div>
+
+              <!-- STOCK -->
+              <div class="col-md-6">
+                <label class="form-label text-secondary">Stock</label>
+                <input
+                  id="stock"
+                  type="number"
+                  class="form-control"
+                  step="1"
+                  onwheel="this.blur()"
+                />
+              </div>
+
+              <!-- DESCRIPTION -->
+              <div class="col-12">
+                <label class="form-label text-secondary">Description</label>
+                <textarea
+                  id="description"
+                  class="form-control"
+                  onfocus="
+                    hideAllErrors();
+                    showError('description', 'editDescriptionError');
+                  "
+                  oninput="
+                    validateField({
+                      inputId: 'description',
+                      errorId: 'editDescriptionError',
+                      validator: (value) => value.trim().length >= 10,
+                    });
+                    checkEditForm();
+                  "
+                ></textarea>
+                <i
+                  id="editDescriptionValid"
+                  class="fa-solid fa-circle-check valid-icon"
+                ></i>
+
+                <small id="editDescriptionError" class="error-text">
+                  Description must be at least 10 characters
+                </small>
+              </div>
+
+              <!-- COVER IMAGE -->
+              <div class="col-md-6">
+                <label class="form-label text-secondary">Main Image</label>
+                <input type="file" id="imageCover" class="form-control" />
+                <div id="coverPreview" class="mt-2"></div>
+              </div>
+
+              <!-- GALLERY -->
+              <div class="col-md-6">
+                <label class="form-label text-secondary">Gallery Images</label>
+                <input type="file" id="images" class="form-control" multiple />
+                <div id="previewImages" class="row g-2 mt-2"></div>
+              </div>
+
+              <!-- CATEGORY -->
+              <div class="col-12">
+                <label class="form-label text-secondary">Category</label>
+                <select
+                  id="category"
+                  class="form-select"
+                  onchange="checkEditForm()"
+                ></select>
+              </div>
+            </div>
+          </div>
+
+          <!-- FOOTER -->
+          <div class="modal-footer border-secondary">
+            <button
+              id="editProductBtn"
+              class="btn btn-warning w-100 fw-bold"
+              onclick="updateProduct()"
+              disabled
+            >
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--! add product -->
+    <div class="modal fade" id="addProductModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-dark text-white">
+          <div class="modal-header">
+            <h5>Add Product</h5>
+            <button
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <input
+              id="addTitle"
+              class="form-control mb-2"
+              placeholder="Title"
+              onfocus="
+                hideAllErrors();
+                showError('addTitle', 'titleError');
+              "
+              oninput="
+                validateField({
+                  inputId: 'addTitle',
+                  errorId: 'titleError',
+                  validator: (value) => value.trim().length >= 4,
+                });
+                checkForm();
+              "
+            />
+            <i id="titleValid" class="fa-solid fa-circle-check valid-icon"></i>
+            <small id="titleError" class="error-text">
+              Title must be at least 4 characters
+            </small>
+
+            <input
+              id="addPrice"
+              class="form-control mb-2"
+              placeholder="Price"
+              onfocus="
+                hideAllErrors();
+                showError('addPrice', 'priceError');
+              "
+              oninput="
+                validateField({
+                  inputId: 'addPrice',
+                  errorId: 'priceError',
+                  validator: (value) => Number(value) > 0,
+                });
+                validateField({
+                  inputId: 'addPriceAfterDiscount',
+                  errorId: 'discountError',
+                  validator: validateDiscount,
+                });
+                checkForm();
+              "
+            />
+            <i id="priceValid" class="fa-solid fa-circle-check valid-icon"></i>
+            <small id="priceError" class="error-text">
+              Price must be greater than 0
+            </small>
+            <input
+              id="addPriceAfterDiscount"
+              class="form-control mb-2"
+              placeholder="Price After Discount"
+              onfocus="
+                hideAllErrors();
+                showError('addPriceAfterDiscount', 'discountError');
+              "
+              oninput="
+                validateField({
+                  inputId: 'addPriceAfterDiscount',
+                  errorId: 'discountError',
+                  validator: validateDiscount,
+                });
+                checkForm();
+              "
+            />
+            <small id="discountError" class="error-text">
+              Discount must be less than Price
+            </small>
+
+            <input
+              id="addStock"
+              class="form-control mb-2"
+              placeholder="Stock"
+            />
+
+            <div class="input-box mb-3">
+              <textarea
+                id="addDescription"
+                class="form-control"
+                placeholder="Description"
+                onfocus="
+                  hideAllErrors();
+                  showError('addDescription', 'descriptionError');
+                "
+                oninput="
+                  validateField({
+                    inputId: 'addDescription',
+                    errorId: 'descriptionError',
+                    validator: (value) => value.trim().length >= 10,
+                  });
+                  checkForm();
+                "
+              ></textarea>
+              <i
+                id="descriptionValid"
+                class="fa-solid fa-circle-check valid-icon d-none"
+              ></i>
+              <small id="descriptionError" class="error-text">
+                Description must be at least 10 characters
+              </small>
+            </div>
+
+            <input
+              id="addImageCover"
+              type="file"
+              class="form-control mb-2"
+              placeholder="Image Cover URL"
+              onchange="checkForm()"
+            />
+            <div id="addCoverPreview" class="mb-3"></div>
+
+            <input
+              id="addImages"
+              type="file"
+              multiple
+              class="form-control mb-2"
+              placeholder="img1,img2,img3"
+            />
+            <div id="addPreviewImages" class="row mt-3"></div>
+
+            <select
+              id="addCategory"
+              class="form-select"
+              onchange="checkForm()"
+            ></select>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              id="addProductBtn"
+              class="btn btn-warning w-100"
+              onclick="addProduct()"
+              disabled
+            >
+              Add Product
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--! add category -->
+    <div class="modal fade" id="addCategoryModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content bg-dark text-white">
+          <div class="modal-header">
+            <h5 class="">Add Category</h5>
+
+            <button
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <input
+              id="categoryName"
+              class="form-control"
+              placeholder="Category Name"
+            />
+            <input id="categoryImage" type="file" class="form-control my-2" />
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-warning w-100" onclick="addCategory()">
+              Add Category
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--! edit category -->
+    <div class="modal fade" id="editCategoryModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content bg-dark text-white">
+          <div class="modal-header">
+            <h5>Edit Category</h5>
+            <button
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <input
+              id="editCategoryName"
+              class="form-control mb-3"
+              placeholder="Category Name"
+            />
+
+            <input
+              type="file"
+              id="editCategoryImage"
+              class="form-control mb-3"
+            />
+
+            <div id="editCategoryPreview"></div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-warning w-100" onclick="updateCategory()">
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- bootstrap -->
+    <script src="JS/bootstrap.bundle.min.js"></script>
+    <script src="JS/admin-index.js"></script>
+  </body>
+</html>

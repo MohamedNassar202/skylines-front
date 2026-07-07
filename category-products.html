@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="images/navbar_logo.jpeg" />
+    <!-- font awesome -->
+    <link rel="stylesheet" href="CSS/all.min.css" />
+    <!-- bootstrap  -->
+    <link rel="stylesheet" href="CSS/bootstrap.min.css" />
+    <!-- products css -->
+    <link rel="stylesheet" href="CSS/category_products.css" />
+
+    <title>SkyLines_category_products</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <!-- logo -->
+
+        <a class="navbar-brand fw-bold" href="index.html">
+          <img
+            src="images/navbar_logo.jpeg"
+            width="40"
+            loading="lazy"
+            class="rounded-circle me-2"
+          />Sky<span class="text-warning">Lines</span>
+        </a>
+
+        <!-- cart -->
+
+        <a href="cart.html" class="nav-link position-relative text-white">
+          <i class="fa-solid fa-cart-shopping fs-4"></i>
+
+          <span
+            id="cartCount"
+            class="position-absolute top-0 start-100 translate-middle badge text-warning"
+          >
+          </span>
+        </a>
+      </div>
+    </nav>
+
+    <div class="container py-5">
+      <h2 id="categoryTitle" class="text-center text-white fw-bold my-5"></h2>
+
+      <!-- search -->
+
+      <div class="row mb-5">
+        <div class="col-md-6 mx-auto">
+          <input
+            type="text"
+            id="searchInput"
+            class="form-control"
+            placeholder="Search Products..."
+          />
+        </div>
+      </div>
+
+      <!-- products -->
+
+      <div class="row" id="productsData"></div>
+      <div class="d-flex justify-content-center mt-3">
+        <div id="pagination" class="d-flex gap-2 flex-wrap"></div>
+      </div>
+    </div>
+    <!-- ! Loading Screen -->
+
+    <div id="pageLoader" class="page-loader">
+      <img
+        src="images/navbar_logo.jpeg"
+        class="loader-logo"
+        alt="loader-logo"
+        loading="lazy"
+      />
+    </div>
+    
+    <script src="JS/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="JS/cart.js"></script>
+    <script src="JS/category_products.js"></script>
+  </body>
+</html>

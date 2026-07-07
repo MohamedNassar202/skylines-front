@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="images/navbar_logo.jpeg" />
+
+    <!-- bootstrap -->
+
+    <link rel="stylesheet" href="CSS/bootstrap.min.css" />
+
+    <!-- font awesome -->
+
+    <link rel="stylesheet" href="CSS/all.min.css" />
+
+    <!-- my css -->
+    <link rel="stylesheet" href="CSS/cart.css" />
+
+    <title>SkyLines Cart</title>
+  </head>
+
+  <body class="text-white">
+    <!-- navbar -->
+
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <!-- logo -->
+
+        <a class="navbar-brand fw-bold" href="index.html">
+          <img
+            src="images/navbar_logo.jpeg"
+            width="40"
+            class="rounded-circle me-2"
+          />
+
+          Sky<span class="text-warning">Lines</span>
+        </a>
+
+        <!-- cart -->
+
+        <a href="cart.html" class="text-white position-relative">
+          <i class="fa-solid fa-cart-shopping fs-4"></i>
+
+          <span
+            id="cartCount"
+            class="position-absolute top-0 start-100 translate-middle badge text-warning"
+          >
+          </span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- cart section -->
+
+    <div class="container py-5 mt-5">
+      <!-- title -->
+
+      <h2 class="text-center fw-bold mb-5">🛒 My Cart</h2>
+
+      <!-- cart items -->
+
+      <div id="cartItems" class="row g-4"></div>
+
+      <!-- total -->
+
+      <div class="text-center mt-5">
+        <h3 id="totalPrice" class="text-warning fw-bold"></h3>
+
+        <!-- checkout -->
+
+        <button
+          onclick="checkout()"
+          class="btn btn-success mt-4 px-5 py-3 fw-bold"
+        >
+          Checkout WhatsApp
+
+          <i class="fa-brands fa-whatsapp ms-2"></i>
+        </button>
+      </div>
+    </div>
+    <!-- ! Loading Screen -->
+
+    <div id="pageLoader" class="page-loader">
+      <img
+        src="images/navbar_logo.jpeg"
+        class="loader-logo"
+        alt="loader-logo"
+      />
+    </div>
+
+    <!-- sweet alert -->
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- cart system -->
+
+    <script src="JS/cart.js"></script>
+
+    <!-- cart page -->
+
+    <script src="JS/cartPage.js"></script>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  min-height:100vh;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  text-align:center;
+
+  font-family:"Cairo",sans-serif;
+
+  background-image:
+  linear-gradient(rgba(0,0,0,.9),rgba(0,0,0,1)),
+  url("../images/backgroundImage.jpeg");
+
+  background-size:cover;
+  background-position:center;
+}
+
+.error-container{
+  max-width:600px;
+}
+
+.logo{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+
+  margin-bottom:20px;
+
+  box-shadow:0 0 20px rgba(255,193,7,.3);
+}
+
+h1{
+  font-size:8rem;
+  font-weight:900;
+  color:#ffc107;
+}
+
+h3{
+  color:white;
+  margin-bottom:15px;
+}
+
+p{
+  color:#aaa;
+  margin-bottom:30px;
+}

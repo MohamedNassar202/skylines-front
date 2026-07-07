@@ -1,0 +1,69 @@
+<!-- admin/login.html -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="images/navbar_logo.jpeg" />
+
+    <title>Admin_Login</title>
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="CSS/bootstrap.min.css" />
+
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="CSS/all.min.css" />
+
+    <!-- admin css -->
+    <link rel="stylesheet" href="CSS/admin-login.css" />
+  </head>
+
+  <body>
+    <div class="login-box">
+      <div class="text-center mb-4">
+        <img src="images/navbar_logo.jpeg" class="login-logo mb-3" alt="logo" />
+
+        <h2 class="title">Admin Dashboard</h2>
+      </div>
+
+      <form id="loginForm">
+        <input
+          type="email"
+          id="email"
+          class="form-control mb-3"
+          placeholder="Admin Email"
+          required
+        />
+
+        <input
+          type="password"
+          id="password"
+          class="form-control mb-4"
+          placeholder="Password"
+          required
+        />
+
+        <button class="btn btn-warning w-100 fw-bold py-2">
+          <i class="fa-solid fa-right-to-bracket"></i>
+
+          Login
+        </button>
+      </form>
+    </div>
+    <!-- ! Loading Screen -->
+
+    <div id="pageLoader" class="page-loader hide">
+      <img
+        src="images/navbar_logo.jpeg"
+        class="loader-logo"
+        alt="loader-logo"
+      />
+    </div>
+    <!-- sweetalert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="JS/bootstrap.bundle.min.js"></script>
+    <script src="JS/admin-login.js"></script>
+  </body>
+</html>
