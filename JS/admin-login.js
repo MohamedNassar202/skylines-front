@@ -1,7 +1,16 @@
 const form = document.getElementById("loginForm");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
-
+const togglePassword = document.getElementById("togglePassword");
+togglePassword.addEventListener("click", () => {
+  if (password.type === "password") {
+    password.type = "text";
+    togglePassword.classList.replace("fa-eye", "fa-eye-slash");
+  } else {
+    password.type = "password";
+    togglePassword.classList.replace("fa-eye-slash", "fa-eye");
+  }
+});
 let isLoading = false;
 
 // ========================
@@ -28,13 +37,16 @@ form.addEventListener("submit", async (e) => {
   try {
     isLoading = true;
 
-    const res = await fetch("https://skylines-xi.vercel.app/api/v1/auth/signin", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const res = await fetch(
+      "https://skylines-xi.vercel.app/api/v1/auth/signin",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
       },
-      body: JSON.stringify({ email, password }),
-    });
+    );
 
     let data;
 

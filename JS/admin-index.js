@@ -198,7 +198,7 @@ async function loadProducts(page = 1, keyword = "") {
           <div class="d-flex gap-2 flex-wrap mb-3">
 
             ${(p.images || [])
-              .slice(0, 4)
+              .slice(0, 7)
               .map(
                 (img) => `
                 <img

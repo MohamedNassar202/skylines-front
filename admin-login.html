@@ -37,14 +37,25 @@
           required
         />
 
-        <input
-          type="password"
-          id="password"
-          class="form-control mb-4"
-          placeholder="Password"
-          required
-        />
-
+        <div class="position-relative">
+          <input
+            type="password"
+            id="password"
+            class="form-control mb-4"
+            placeholder="Password"
+            required
+          />
+          <i
+            id="togglePassword"
+            class="fa-solid fa-eye position-absolute text-white"
+            style="
+              right: 15px;
+              top: 50%;
+              transform: translateY(-50%);
+              cursor: pointer;
+            "
+          ></i>
+        </div>
         <button class="btn btn-warning w-100 fw-bold py-2">
           <i class="fa-solid fa-right-to-bracket"></i>
 

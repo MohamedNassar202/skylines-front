@@ -10,6 +10,7 @@ function hidePageLoader() {
 const productsData = document.getElementById("productsData");
 const pagination = document.getElementById("pagination");
 const searchInput = document.getElementById("searchInput");
+let currentKeyword = "";
 
 // ========================
 // CHECK IF IN CART
@@ -22,6 +23,7 @@ function isInCart(id) {
 // GET ALL PRODUCTS
 // ========================
 async function getAllProducts(page = 1, keyword = "") {
+  currentKeyword = keyword
   try {
     showPageLoader();
     productsData.innerHTML = `
@@ -143,7 +145,7 @@ function createPagination(totalPages, currentPage) {
   for (let i = 1; i <= totalPages; i++) {
     pages += `
       <button
-        onclick="getAllProducts(${i})"
+        onclick="getAllProducts(${i}, '${currentKeyword}')"
         class="btn ${i === currentPage ? "btn-warning" : "btn-outline-warning"}"
       >
         ${i}
