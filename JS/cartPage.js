@@ -6,7 +6,7 @@ function showPageLoader() {
 function hidePageLoader() {
   document.getElementById("pageLoader").classList.add("hide");
 }
-
+const cartFooter = document.getElementById("cartFooter");
 const cartItems = document.getElementById("cartItems");
 const totalPriceEl = document.getElementById("totalPrice");
 
@@ -49,6 +49,8 @@ async function loadCart() {
   `;
 
     if (!window.cart.length) {
+      document.body.style.overflow = "hidden";
+      cartFooter.style.display = "none";
       cartItems.innerHTML = `
       <div class="text-center py-5">
         <i class="fa-solid fa-cart-shopping fs-1 text-warning"></i>
@@ -63,7 +65,8 @@ async function loadCart() {
 
       return;
     }
-
+    document.body.style.overflow = "auto";
+    cartFooter.style.display = "block";
     let cartona = "";
     let total = 0;
 
@@ -155,7 +158,6 @@ async function loadCart() {
 
     updateTotalUI(total);
   } catch (error) {
-    
     Swal.fire({
       icon: "error",
       title: "Failed To Load Cart",
@@ -194,7 +196,6 @@ function changeQuantity(id, change) {
 
   // update qty UI
   document.getElementById(`qty-${id}`).innerText = item.quantity;
-
 
   // update ITEM TOTAL UI (FIX IMPORTANT)
   if (product) {

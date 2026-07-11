@@ -275,8 +275,12 @@ function renderPagination(totalPages) {
         class="btn ${
           i === currentPage ? "btn-warning" : "btn-outline-warning"
         } mx-1 mb-2"
-
-        onclick="loadProducts(${i}, keyword)"
+        
+        ${
+          i === currentPage
+            ? "disabled"
+            : `onclick="loadProducts(${i}, '${keyword}')"`
+        }
       >
         ${i}
       </button>

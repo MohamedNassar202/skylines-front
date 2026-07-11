@@ -25,11 +25,11 @@ body {
   background-color: #ffc107;
   color: black;
 }
-.card{
-  transition: .3s;
+.card {
+  transition: 0.3s;
 }
 
-.card:hover{
+.card:hover {
   transform: translateY(-5px);
 }
 /* ! loading screen */
@@ -65,4 +65,18 @@ body {
   to {
     transform: rotate(360deg);
   }
+}
+.continue-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.continue-btn i {
+  transition: transform 0.3s ease;
+}
+
+.continue-btn:hover i {
+  transform: translateX(6px);
 }

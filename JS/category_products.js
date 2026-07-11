@@ -17,13 +17,13 @@ const categoryName = params.get("name");
 const categoryId = params.get("id");
 
 let allProducts = [];
-let currentPage = 1;
-
+let currentKeyword = "";
 // ========================
 // GET CATEGORY PRODUCTS
 // ========================
 
 async function getCategoryProducts(page = 1, keyword = "") {
+  currentKeyword = keyword;
   try {
     showPageLoader();
     productsData.innerHTML = `
@@ -164,7 +164,7 @@ function createPagination(totalPages, currentPage) {
   for (let i = 1; i <= totalPages; i++) {
     pages += `
       <button
-        onclick="getCategoryProducts(${i})"
+         ${i === currentPage ? "disabled" : `onclick = "getCategoryProducts(${i}, '${currentKeyword}')"`}
         class="btn ${i === currentPage ? "btn-warning" : "btn-outline-warning"}"
       >
         ${i}
