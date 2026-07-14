@@ -201,7 +201,7 @@ async function submitOrder() {
 <span class="spinner-border spinner-border-sm"></span>
  Sending...
 `;
-    const res = await fetch("http://localhost:5000/api/v1/orders", {
+    const res = await fetch("https://skylines-xi.vercel.app/api/v1/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
