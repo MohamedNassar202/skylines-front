@@ -24,7 +24,9 @@ function setError(id, message) {
   } else {
     input.classList.remove("is-invalid");
 
-    if (input.value.trim() !== "") {
+    if (input.value.trim() === "") {
+      input.classList.remove("is-valid");
+    } else {
       input.classList.add("is-valid");
     }
   }
@@ -120,7 +122,12 @@ governorateInput.addEventListener("change", () => {
 
 // City
 cityInput.addEventListener("change", () => {
-  setError("cityError", "");
+  if (!cityInput.value) {
+    cityInput.classList.remove("is-valid", "is-invalid");
+    setError("cityError", "");
+  } else {
+    setError("cityError", "");
+  }
   checkFormValid();
 });
 // customer information
@@ -227,6 +234,11 @@ async function submitOrder() {
         document.getElementById("checkoutModal"),
       );
       modal.hide();
+      document.body.classList.remove("modal-open");
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+      document.querySelectorAll(".modal-backdrop").forEach((el) => el.remove());
+
       setTimeout(() => {
         window.open(
           `https://wa.me/${phone}?text=${encodeURIComponent(data.whatsappMessage)}`,
