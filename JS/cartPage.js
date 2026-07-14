@@ -272,68 +272,68 @@ loadCart();
 // ========================
 // CHECKOUT
 // ========================
-async function checkout() {
-  try {
-    if (!window.cart.length) {
-      Swal.fire({
-        icon: "warning",
-        title: "Cart is empty",
-      });
-      return;
-    }
+// async function checkout() {
+//   try {
+//     if (!window.cart.length) {
+//       Swal.fire({
+//         icon: "warning",
+//         title: "Cart is empty",
+//       });
+//       return;
+//     }
 
-    const items = window.cart.map((item) => ({
-      productId: item.id,
-      quantity: item.quantity,
-    }));
+//     const items = window.cart.map((item) => ({
+//       productId: item.id,
+//       quantity: item.quantity,
+//     }));
 
-    const res = await fetch("https://skylines-xi.vercel.app/api/v1/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ items }),
-    });
+//     const res = await fetch("https://skylines-xi.vercel.app/api/v1/checkout", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({ items }),
+//     });
 
-    const data = await res.json();
+//     const data = await res.json();
 
-    if (!res.ok) {
-      throw new Error(data.message || "Checkout failed");
-    }
-    const result = await Swal.fire({
-      icon: "success",
-      title: "Order Created",
-      text: `Total: ${data.totalPrice} EGP`,
-      confirmButtonText: "Send WhatsApp",
-      showCancelButton: true,
-      cancelButtonText: "Cancel",
-    });
+//     if (!res.ok) {
+//       throw new Error(data.message || "Checkout failed");
+//     }
+//     const result = await Swal.fire({
+//       icon: "success",
+//       title: "Order Created",
+//       text: `Total: ${data.totalPrice} EGP`,
+//       confirmButtonText: "Send WhatsApp",
+//       showCancelButton: true,
+//       cancelButtonText: "Cancel",
+//     });
 
-    const phone = "201008626867";
-    if (result.isConfirmed) {
-      window.open(
-        `https://wa.me/${phone}?text=${encodeURIComponent(data.whatsappMessage)}`,
-        "_blank",
-      );
-      window.cart = [];
-      localStorage.setItem("cart", JSON.stringify([]));
+//     const phone = "201008626867";
+//     if (result.isConfirmed) {
+//       window.open(
+//         `https://wa.me/${phone}?text=${encodeURIComponent(data.whatsappMessage)}`,
+//         "_blank",
+//       );
+//       window.cart = [];
+//       localStorage.setItem("cart", JSON.stringify([]));
 
-      updateCartCount();
-      loadCart();
-    } else {
-      Swal.fire({
-        icon: "info",
-        title: "Order not sent",
-        text: "Your cart is still available",
-        timer: 1500,
-        showConfirmButton: false,
-      });
-    }
-  } catch (error) {
-    Swal.fire({
-      icon: "error",
-      title: "Checkout Failed",
-      text: error.message,
-    });
-  }
-}
+//       updateCartCount();
+//       loadCart();
+//     } else {
+//       Swal.fire({
+//         icon: "info",
+//         title: "Order not sent",
+//         text: "Your cart is still available",
+//         timer: 1500,
+//         showConfirmButton: false,
+//       });
+//     }
+//   } catch (error) {
+//     Swal.fire({
+//       icon: "error",
+//       title: "Checkout Failed",
+//       text: error.message,
+//     });
+//   }
+// }

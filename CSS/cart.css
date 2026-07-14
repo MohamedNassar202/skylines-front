@@ -80,3 +80,23 @@ body {
 .continue-btn:hover i {
   transform: translateX(6px);
 }
+.continue-check-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.continue-check-btn i {
+  transition: transform 0.3s ease;
+}
+
+.continue-check-btn:hover i {
+  transform: translateX(6px);
+}
+#customerNotes{
+  width: 100%;
+  min-height: 120px;
+  min-width: 120px;
+  resize: none;
+}

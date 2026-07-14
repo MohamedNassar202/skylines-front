@@ -22,6 +22,89 @@
   </head>
 
   <body class="text-white">
+    <!-- Checkout Modal -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white border-warning">
+          <div class="modal-header border-warning">
+            <h5 class="modal-title">
+              <i class="fa-solid fa-user me-2 text-warning"></i>
+              your Information
+            </h5>
+
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Full Name *</label>
+              <input
+                type="text"
+                id="customerName"
+                class="form-control"
+                placeholder="Enter your full name"
+              />
+              <small id="customerNameError" class="text-danger"></small>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Phone Number *</label>
+              <input
+                type="text"
+                id="customerPhone"
+                class="form-control"
+                placeholder="01xxxxxxxxx"
+              />
+              <small id="customerPhoneError" class="text-danger"></small>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Governorate</label>
+              <select id="governorate" class="form-select"></select>
+              <small id="governorateError" class="text-danger"></small>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">City</label>
+              <select id="city" class="form-select"></select>
+              <small id="cityError" class="text-danger"></small>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Address *</label>
+              <input
+                type="text"
+                id="customerAddress"
+                class="form-control"
+                placeholder="Street, Building..."
+              />
+              <small id="customerAddressError" class="text-danger"></small>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Notes</label>
+              <textarea
+                id="customerNotes"
+                class="form-control"
+                rows="3"
+                placeholder="Optional"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="modal-footer border-warning">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+              Cancel
+            </button>
+
+            <button class="btn btn-success fw-bold" id="confirmCheckout">
+              Send Order <i class="fa-brands fa-whatsapp"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- navbar -->
 
     <nav class="navbar navbar-dark bg-dark fixed-top">
@@ -81,12 +164,12 @@
         <!-- checkout -->
 
         <button
-          onclick="checkout()"
-          class="btn btn-success mt-4 px-5 py-3 fw-bold"
+          class="btn btn-success mt-4 px-5 py-3 fw-bold continue-check-btn"
+          data-bs-toggle="modal"
+          data-bs-target="#checkoutModal"
         >
-          Checkout WhatsApp
-
-          <i class="fa-brands fa-whatsapp ms-2"></i>
+          Continue Checkout
+          <i class="fa-solid fa-arrow-right ms-2"></i>
         </button>
       </div>
     </div>
@@ -103,6 +186,10 @@
     <!-- sweet alert -->
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- bootstrap -->
+    <script src="JS/bootstrap.bundle.min.js"></script>
+    <!-- egypt cities -->
+    <script src="JS/egyptCities.js"></script>
 
     <!-- cart system -->
 
@@ -111,5 +198,7 @@
     <!-- cart page -->
 
     <script src="JS/cartPage.js"></script>
+    <!-- check out -->
+    <script src="JS/checkout.js"></script>
   </body>
 </html>
