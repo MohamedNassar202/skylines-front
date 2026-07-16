@@ -238,7 +238,6 @@ async function submitOrder() {
       document.body.style.overflow = "";
       document.body.style.paddingRight = "";
       document.querySelectorAll(".modal-backdrop").forEach((el) => el.remove());
-
       setTimeout(() => {
         window.open(
           `https://wa.me/${phone}?text=${encodeURIComponent(data.whatsappMessage)}`,

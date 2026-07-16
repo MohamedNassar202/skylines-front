@@ -74,64 +74,17 @@ $(window).resize(handleNavbarResize);
 
 async function checkOut() {
   try {
-    showPageLoader();
-
-    if (!window.cart || window.cart.length === 0) {
-      hidePageLoader();
-      Swal.fire({
-        icon: "warning",
-        title: "Cart is empty",
-      });
-      return;
-    }
-
-    const items = window.cart.map((item) => ({
-      productId: item.id,
-      quantity: item.quantity,
-    }));
-
-    const res = await fetch("https://skylines-xi.vercel.app/api/v1/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ items }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) throw new Error(data.message);
-
-    hidePageLoader();
-
-    const result = await Swal.fire({
-      icon: "success",
-      title: "Order Created 🎉",
-      html: `
-        <h4>Total: ${data.totalPrice} EGP</h4>
-        <p>Do you want to continue to WhatsApp?</p>
-      `,
-      showCancelButton: true,
-      confirmButtonText: "Open WhatsApp",
-      cancelButtonText: "Stay Here",
-    });
-
-    if (!result.isConfirmed) return;
+    const phone = "201008626867";
+//     const message = `
+// السلام عليكم،
+// أرغب في الاستفسار عن منتجات SkyLines.
+// `;
 
     window.open(
-      `https://wa.me/201008626867?text=${encodeURIComponent(
-        data.whatsappMessage,
-      )}`,
+      `https://wa.me/${phone}?text=`,
       "_blank",
     );
-
-    window.cart = [];
-    localStorage.removeItem("cart");
-    updateCartCount();
-    getAllProducts();
   } catch (error) {
-    hidePageLoader();
-
     Swal.fire({
       icon: "error",
       title: "Something went wrong",
@@ -166,7 +119,9 @@ new Swiper(".heroSwiper", {
 // ========================
 
 async function getCategories() {
-  const response = await fetch("https://skylines-xi.vercel.app/api/v1/categories");
+  const response = await fetch(
+    "https://skylines-xi.vercel.app/api/v1/categories",
+  );
   const data = await response.json();
 
   let cartona = "";
@@ -284,4 +239,3 @@ function goToDetails(id) {
 getAllProducts();
 
 //! get location for analytics
-
