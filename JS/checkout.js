@@ -203,12 +203,13 @@ async function submitOrder() {
     };
     confirmBtn.disabled = true;
     confirmBtn.classList.add("disabled");
+    document.getElementById("closeCheckoutBtn").disabled = true;
 
     confirmBtn.innerHTML = `
 <span class="spinner-border spinner-border-sm"></span>
  Sending...
 `;
-    const res = await fetch("https://skylines-xi.vercel.app/api/v1/orders", {
+    const res = await fetch("http://localhost:5000/api/v1/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -220,59 +221,53 @@ async function submitOrder() {
     if (!res.ok) {
       throw new Error(data.message || "Checkout failed");
     }
-    const result = await Swal.fire({
+    await Swal.fire({
       icon: "success",
-      title: "Order Created",
-      text: `Total: ${data.totalPrice} EGP`,
-      confirmButtonText: "Send WhatsApp",
-      showCancelButton: true,
-      cancelButtonText: "Cancel",
+      title: "Order Created Successfully",
+      html: `
+    <p>Total: <b>${data.totalPrice} EGP</b></p>
+    <p>Your order has been received.</p>
+    <p>Click below to continue on WhatsApp.</p>
+  `,
+      confirmButtonText: "Continue to WhatsApp",
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     });
     const phone = "201008626867";
-    if (result.isConfirmed) {
-      const modal = bootstrap.Modal.getInstance(
-        document.getElementById("checkoutModal"),
+    const modal = bootstrap.Modal.getInstance(
+      document.getElementById("checkoutModal"),
+    );
+    modal.hide();
+    document.body.classList.remove("modal-open");
+    document.body.style.overflow = "";
+    document.body.style.paddingRight = "";
+    document.querySelectorAll(".modal-backdrop").forEach((el) => el.remove());
+    setTimeout(() => {
+      window.open(
+        `https://wa.me/${phone}?text=${encodeURIComponent(data.whatsappMessage)}`,
+        "_blank",
       );
-      modal.hide();
-      document.body.classList.remove("modal-open");
-      document.body.style.overflow = "";
-      document.body.style.paddingRight = "";
-      document.querySelectorAll(".modal-backdrop").forEach((el) => el.remove());
-      setTimeout(() => {
-        window.open(
-          `https://wa.me/${phone}?text=${encodeURIComponent(data.whatsappMessage)}`,
-          "_blank",
-        );
-      }, 300);
+    }, 300);
 
-      document.getElementById("customerName").value = "";
-      document.getElementById("customerPhone").value = "";
-      document.getElementById("customerAddress").value = "";
-      document.getElementById("customerNotes").value = "";
-      document.querySelectorAll(".form-control,.form-select").forEach((el) => {
-        el.classList.remove("is-valid", "is-invalid");
-      });
+    document.getElementById("customerName").value = "";
+    document.getElementById("customerPhone").value = "";
+    document.getElementById("customerAddress").value = "";
+    document.getElementById("customerNotes").value = "";
+    document.querySelectorAll(".form-control,.form-select").forEach((el) => {
+      el.classList.remove("is-valid", "is-invalid");
+    });
 
-      clearErrors();
-      checkFormValid();
-      window.cart = [];
-      localStorage.setItem("cart", JSON.stringify([]));
+    clearErrors();
+    checkFormValid();
+    window.cart = [];
+    localStorage.setItem("cart", JSON.stringify([]));
 
-      updateCartCount();
-      loadCart();
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    } else {
-      Swal.fire({
-        icon: "info",
-        title: "Order not sent",
-        text: "Your cart is still available",
-        timer: 1500,
-        showConfirmButton: false,
-      });
-    }
+    updateCartCount();
+    loadCart();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   } catch (error) {
     Swal.fire({
       icon: "error",
@@ -281,6 +276,7 @@ async function submitOrder() {
     });
   } finally {
     confirmBtn.innerHTML = `Send Order <i class="fa-brands fa-whatsapp"></i>`;
+    document.getElementById("closeCheckoutBtn").disabled = false;
     checkFormValid();
   }
 }
